@@ -1,0 +1,44 @@
+<launch>
+    <!-- 确定处于虚拟环境还是真实环境 -->
+    <param name="/use_sim_time" value="false" />
+
+    <!-- 机器人模型启动 -->
+    <!-- todo -->
+
+    <!-- map loading -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find r2control)/maps/race.yaml" />
+
+    <!-- TF坐标变换，基础参数
+    <arg name="laser_frame_id" default="laser" /> -->
+     <arg name="global_frame_id" default="map" />
+    <arg name="base_frame_id" default="body" />
+    <arg name="odom_frame_id" default="camera_init" /> 
+
+    <!-- TF坐标变换，将雷达的odom基坐标转换到地图上 -->
+    <node pkg="tf" type="static_transform_publisher" name="odom_to_map" args="0.0 0 0.0 1.5707963 0 0 $(arg global_frame_id) $(arg odom_frame_id) 0.1" />
+
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base"  output="screen">
+        <rosparam file="$(find r2control)/navi_lidar/costmap_common_global_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find r2control)/navi_lidar/costmap_common_local_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find r2control)/navi_lidar/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find r2control)/navi_lidar/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find r2control)/navi_lidar/teb_local_planner_params.yaml" command="load" />
+        <!-- <rosparam file="$(find wpb_home_tutorials)/navi_lidar/local_planner_params.yaml" command="load" /> -->
+        <!-- <rosparam file="$(find wpb_home_tutorials)/navi_lidar/dwa_local_planner_params.yaml" command="load" /> -->
+    
+        <param name="base_global_planner" value="global_planner/GlobalPlanner" /> 
+        <param name="use_dijkstra" value="true"/>
+        <!-- <param name="base_local_planner" value="wpbh_local_planner/WpbhLocalPlanner" /> -->
+        <param name= "controller_frequency" value="10.0" type="double"/>
+        <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+        <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
+    </node>
+
+
+
+    <!-- RVIZ可视化调试工具 -->
+    <arg name="rvizconfig" default="$(find r2control)/rviz/loam_livox.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+</launch>

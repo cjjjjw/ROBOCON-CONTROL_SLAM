@@ -1,0 +1,6 @@
+image: /home/cjh/livox_ws/src/r2control/maps/race2.pgm
+resolution: 0.0096955
+origin: [-11.55, -0.486, 0.0]
+negate: 0
+occupied_thresh: 0.2
+free_thresh: 0.1
