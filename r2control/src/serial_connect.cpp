@@ -1,5 +1,6 @@
 #include "r2control/serial_connect.h"
 #include <string.h>
+#include <iostream>
 #include <math.h>
 #include <unistd.h>
 
@@ -61,7 +62,7 @@ void writeData(unsigned char *buf,bool ctrl_flag)
 {
     if (ctrl_flag)
     {
-        Ros_to_Stm32.write(buf,sizeof(buf));
+        Ros_to_Stm32.write(buf,24);
     }else
     {
         ROS_INFO("Unsuccsessfully send");
