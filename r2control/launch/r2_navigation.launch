@@ -10,12 +10,16 @@
 
     <!-- TF坐标变换，基础参数
     <arg name="laser_frame_id" default="laser" /> -->
-     <arg name="global_frame_id" default="map" />
+    <arg name="global_frame_id" default="map" />
     <arg name="base_frame_id" default="body" />
     <arg name="odom_frame_id" default="camera_init" /> 
 
+
     <!-- TF坐标变换，将雷达的odom基坐标转换到地图上 -->
-    <node pkg="tf" type="static_transform_publisher" name="odom_to_map" args="0.0 0 0.0 1.5707963 0 0 $(arg global_frame_id) $(arg odom_frame_id) 0.1" />
+    <node pkg="tf" type="static_transform_publisher" name="odom_to_map" args="-0.26162950 0.26162950 0.0 0.78539815 0 0 $(arg global_frame_id) $(arg odom_frame_id) 1" />
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="odom_to_map" args="0.0 0.370 0.0 0.0 0 0 $(arg global_frame_id) $(arg odom_frame_id) 100" /> -->
+
 
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base"  output="screen">

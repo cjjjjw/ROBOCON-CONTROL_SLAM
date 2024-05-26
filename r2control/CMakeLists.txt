@@ -7,6 +7,13 @@ project(r2control)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+#uncomment the following 4 lines to use the Eigen library
+find_package(cmake_modules REQUIRED)
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
+add_definitions(${EIGEN_DEFINITIONS})
+
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -14,6 +21,9 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   nav_msgs
   tf
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -76,6 +86,7 @@ generate_messages(
   std_msgs  # Or other packages containing msgs
   geometry_msgs
   nav_msgs
+  # tf2_geometry_msgs
 )
 
 ################################################
@@ -135,6 +146,10 @@ add_library(local_handle
 include/${PROJECT_NAME}/local_handle.h
   src/local_handle.cpp
 )
+add_library(dynamic_tf_handle
+include/${PROJECT_NAME}/dynamic_tf_handle.h
+  src/dynamic_tf_handle.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -145,6 +160,7 @@ include/${PROJECT_NAME}/local_handle.h
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(main_control src/main_control.cpp)
+# add_executable(static_base_pub src/static_base_pub.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,6 +173,7 @@ add_executable(main_control src/main_control.cpp)
 add_dependencies(main_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(serial_connect ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(local_handle ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(dynamic_tf_handle ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(serial_connect
@@ -169,6 +186,10 @@ target_link_libraries(local_handle
 target_link_libraries(main_control
 serial_connect
 local_handle
+dynamic_tf_handle
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(dynamic_tf_handle
   ${catkin_LIBRARIES}
 )
 

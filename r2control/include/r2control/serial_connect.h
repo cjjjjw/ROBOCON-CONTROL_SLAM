@@ -24,7 +24,7 @@ using namespace std;
 serial::Serial Ros_to_Stm32;
 bool serialInit(ser_setting *ser);//串口初始化
 unsigned char getCrc8(unsigned char *ptr, unsigned short len);//串口命令检验和
-void writeData(string buf,bool ctrl_flag);
+void writeData(unsigned char *buf,bool ctrl_flag);
 unsigned char receiveData(void);
 // bool writeData(bool flag);//数据发送
 

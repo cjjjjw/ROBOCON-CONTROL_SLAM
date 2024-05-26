@@ -21,19 +21,19 @@ TebLocalPlannerROS:
   shrink_horizon_min_duration: 10
  
   # Robot
-  max_vel_x: 2
+  max_vel_x: 9
   max_vel_x_backwards: 2
   max_vel_theta: 1
-  max_vel_y: 2
-  acc_lim_y: 0.5
-  acc_lim_x: 0.5
+  max_vel_y: 9
+  acc_lim_y: 2
+  acc_lim_x: 2
   acc_lim_theta: 0.5
   min_turning_radius: 0.0
   wheelbase: 0.0 # not used, is differential
   cmd_angle_instead_rotvel: false # not used, is differential
   footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
-   type: "circular"
-   radius: 0.4
+  #  type: "circular"
+  #  radius: 0.4
 # for type "circular"
 #    type: "line"
 #    line_start: [-0.0545, 0.0] # for type "line"
@@ -42,12 +42,12 @@ TebLocalPlannerROS:
 # front_radius: 0.2 # for type "two_circles"
 # rear_offset: 0.2 # for type "two_circles"
 # rear_radius: 0.2 # for type "two_circles"
-    # type: "polygon"
-    # vertices: [[-0.105, -0.105], [-0.105, 0.105], [0.041, 0.105], [0.041, -0.105]] # for type "polygon"
+    type: "polygon"
+    vertices: [[0.22, 0.22], [-0.22, 0.22], [-0.22, -0.22], [0.22, -0.22]] # for type "polygon"
  
   # GoalTolerance
-  xy_goal_tolerance: 0.18
-  yaw_goal_tolerance: 0.12
+  xy_goal_tolerance: 0.05
+  yaw_goal_tolerance: 0.05
   free_goal_vel: False
  
   # Obstacles
